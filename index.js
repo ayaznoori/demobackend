@@ -8,12 +8,12 @@ app.use(cors())
 
 app.post('/login',async(req,res)=>{
     let data=req.body;
-    let check=await userModel.find({email:data.email,password:data.password});
+    let check=await userModel.find({email:data.email,password:data.password},{password:0});
     if(check.length>0){
        res.status(200).send({msg:"User Login in Successfully",data:check})
     }
     else{
-        res.status(400).send({error:"Not Found"})
+        res.status(400).send({error:"User Not Found"})
     }
 
 })
@@ -55,7 +55,7 @@ app.patch('/userdata/:id',async(req,res)=>{
         let data1=check[0].tickets;
         data1.push(data);
         let update=await userModel.findByIdAndUpdate({_id:id},{tickets:data1})
-        res.status(200).send({data:update})
+        res.status(200).send({msg:"Sucess",data:update})
     }
     else{
         res.status(400).send({error:"No data found"})
